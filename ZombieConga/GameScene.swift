@@ -52,8 +52,8 @@ class GameScene: SKScene {
                       
                       let grandmaAnimation = SKAction.sequence(
                           [move1,move2, move3, move4])
-               
-               self.gramma.run(grandmaAnimation)
+                let grandmaForeverAnimation = SKAction.repeatForever(grandmaAnimation)
+               self.gramma.run(grandmaForeverAnimation)
         
      
     }
