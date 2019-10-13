@@ -37,7 +37,24 @@ class GameScene: SKScene {
     zombie.position = CGPoint(x:400, y:400)
     addChild(zombie)
         
-       
+    gramma=SKSpriteNode(imageNamed: "enemy")
+    self.gramma.position = CGPoint(x:size.width-100, y:size.height/2)
+    addChild(self.gramma)
+        
+        
+        
+        
+        let move1 = SKAction.move(to: CGPoint(x: size.width/2 , y: 400),
+                                                duration: 2)
+        let move2 = SKAction.move(to:CGPoint(x:100, y:size.height/2), duration:2)
+                    let move3 = SKAction.move(to:CGPoint(x:size.width/2, y:400), duration:2)
+                      let move4 = SKAction.move(to:CGPoint(x:size.width - 100, y:size.height / 2), duration:2)
+                      
+                      let grandmaAnimation = SKAction.sequence(
+                          [move1,move2, move3, move4])
+               
+               self.gramma.run(grandmaAnimation)
+        
      
     }
     
@@ -96,10 +113,11 @@ class GameScene: SKScene {
         
                 self.checkGameBoundaries()
         
-        self.spawnEnemy()
+        
            // calculate offset between the zombie and the touch
                //self.moveZombieToward(location: touchLocation)
             }
+    
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
@@ -181,18 +199,8 @@ class GameScene: SKScene {
         
              }
     
-    func spawnEnemy()
-    {
-        self.gramma = SKSpriteNode(imageNamed: "enemy")
-        self.gramma.position = CGPoint(x:400, y:400)
-           addChild(gramma)
-    }
         
-    }
-        
-        
-        
-
+}
     
     
     
