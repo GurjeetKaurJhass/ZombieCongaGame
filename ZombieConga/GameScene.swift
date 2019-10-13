@@ -12,6 +12,7 @@ import GameplayKit
 class GameScene: SKScene {
 
     var zombie:SKSpriteNode = SKSpriteNode(imageNamed:"zombie1")
+    var gramma:SKSpriteNode = SKSpriteNode(imageNamed:"enemy")
     var makeZombieMoveRight:Bool=true
     var makeZombieMoveLeft:Bool=false
     
@@ -36,15 +37,15 @@ class GameScene: SKScene {
     zombie.position = CGPoint(x:400, y:400)
     addChild(zombie)
         
+       
+     
     }
     
     
     override func update(_ currentTime: TimeInterval) {
           
         
-        
-        
-        
+
         // DEBUG:  Show the time between updats
               
 
@@ -95,7 +96,7 @@ class GameScene: SKScene {
         
                 self.checkGameBoundaries()
         
-    
+        self.spawnEnemy()
            // calculate offset between the zombie and the touch
                //self.moveZombieToward(location: touchLocation)
             }
@@ -124,7 +125,7 @@ class GameScene: SKScene {
                print("Amount to move: \(amountToMove)")
         
                // update the sprite's position
-            let newX = sprite.position.x + amountToMove.x
+               let newX = sprite.position.x + amountToMove.x
                let newY = sprite.position.y + amountToMove.y
                sprite.position = CGPoint(x:newX, y:newY)
         
@@ -179,6 +180,13 @@ class GameScene: SKScene {
                 }
         
              }
+    
+    func spawnEnemy()
+    {
+        self.gramma = SKSpriteNode(imageNamed: "enemy")
+        self.gramma.position = CGPoint(x:400, y:400)
+           addChild(gramma)
+    }
         
     }
         
