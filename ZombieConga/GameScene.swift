@@ -44,18 +44,19 @@ class GameScene: SKScene {
         
         
         
-        let move1 = SKAction.move(to: CGPoint(x: size.width/2 , y: 400),
+    let move1 = SKAction.move(to: CGPoint(x: size.width/2 , y: 400),
                                                 duration: 2)
-        let move2 = SKAction.move(to:CGPoint(x:100, y:size.height/2), duration:2)
-                    let move3 = SKAction.move(to:CGPoint(x:size.width/2, y:400), duration:2)
-                      let move4 = SKAction.move(to:CGPoint(x:size.width - 100, y:size.height / 2), duration:2)
-                      
-                      let grandmaAnimation = SKAction.sequence(
-                          [move1,move2, move3, move4])
-                let grandmaForeverAnimation = SKAction.repeatForever(grandmaAnimation)
+    let move2 = SKAction.move(to:CGPoint(x:100, y:size.height/2), duration:2)
+    let move3 = SKAction.move(to:CGPoint(x:size.width/2, y:400), duration:2)
+    let move4 = SKAction.move(to:CGPoint(x:size.width - 100, y:size.height / 2), duration:2)
+    let grandmaAnimation = SKAction.sequence([move1,move2, move3, move4])
+    let grandmaForeverAnimation = SKAction.repeatForever(grandmaAnimation)
                self.gramma.run(grandmaForeverAnimation)
+//        let zombieAnimation = SKAction.sequence(
+//                   [move3, move4]
+//        )
+//            self.zombie.run(zombieAnimation)
         
-     
     }
     
     
@@ -102,7 +103,7 @@ class GameScene: SKScene {
                  }
        
    timeOfLastUpdate = currentTime
-       print("\(dt*1000) ms since last update")
+       //print("\(dt*1000) ms since last update")
         // first version of upgraded movement
                let v = CGPoint(x:self.zombieMovementPerSecond, y:0)
                self.move(sprite: self.zombie, velocity: v)
@@ -112,6 +113,14 @@ class GameScene: SKScene {
                 self.move(sprite: self.zombie, velocity: self.velocity)
         
                 self.checkGameBoundaries()
+        
+        
+        
+        
+        
+        if (self.zombie.frame.intersects(self.gramma.frame) == true) {
+                    print("\(currentTime): COLLISON!")
+                }
         
         
            // calculate offset between the zombie and the touch
@@ -128,7 +137,7 @@ class GameScene: SKScene {
                return
            }
            let touchLocation=touch!.location(in: self)
-           print("user tapped at\(touchLocation.x.rounded()),\(touchLocation.y.rounded())")
+          // print("user tapped at\(touchLocation.x.rounded()),\(touchLocation.y.rounded())")
            self.moveZombieToward(location:touchLocation)
        }
         
@@ -140,7 +149,7 @@ class GameScene: SKScene {
                 let amountToMove = CGPoint(x: velocity.x * CGFloat(dt),
                                            y:  velocity.y * CGFloat(dt) )
         
-               print("Amount to move: \(amountToMove)")
+               //print("Amount to move: \(amountToMove)")
         
                // update the sprite's position
                let newX = sprite.position.x + amountToMove.x
