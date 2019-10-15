@@ -13,6 +13,7 @@ class GameScene: SKScene {
 
     var zombie:SKSpriteNode = SKSpriteNode(imageNamed:"zombie1")
     var gramma:SKSpriteNode = SKSpriteNode(imageNamed:"enemy")
+    var cat:SKSpriteNode = SKSpriteNode(imageNamed: "cat")
     var makeZombieMoveRight:Bool=true
     var makeZombieMoveLeft:Bool=false
     var livesLabel:SKLabelNode!
@@ -42,6 +43,11 @@ class GameScene: SKScene {
     self.gramma.position = CGPoint(x:size.width-100, y:size.height/2)
     addChild(self.gramma)
         
+        self.cat = SKSpriteNode(imageNamed: "cat")
+               self.cat.position = CGPoint(x:600, y:600)
+               addChild(self.cat)
+        
+        
          // Add life label
             self.livesLabel = SKLabelNode(text: "Lives Remaining: \(lives)")
             self.livesLabel.position = CGPoint(x:400, y:800)
@@ -67,7 +73,6 @@ class GameScene: SKScene {
 //            self.zombie.run(zombieAnimation)
         
     }
-    
     
     override func update(_ currentTime: TimeInterval) {
           
