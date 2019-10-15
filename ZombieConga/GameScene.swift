@@ -15,10 +15,11 @@ class GameScene: SKScene {
     var gramma:SKSpriteNode = SKSpriteNode(imageNamed:"enemy")
     var makeZombieMoveRight:Bool=true
     var makeZombieMoveLeft:Bool=false
+    var livesLabel:SKLabelNode!
     
         var timeOfLastUpdate:TimeInterval = 0
         var dt:TimeInterval = 0
-    
+        var lives = 100
         // variables to deal with movement
         let zombieMovementPerSecond: CGFloat = 480.0
         var velocity = CGPoint.zero // this is a built in Swift constant. It equals (0,0)
@@ -40,6 +41,14 @@ class GameScene: SKScene {
     gramma=SKSpriteNode(imageNamed: "enemy")
     self.gramma.position = CGPoint(x:size.width-100, y:size.height/2)
     addChild(self.gramma)
+        
+         // Add life label
+            self.livesLabel = SKLabelNode(text: "Lives Remaining: \(lives)")
+            self.livesLabel.position = CGPoint(x:400, y:800)
+            self.livesLabel.fontColor = UIColor.yellow
+            self.livesLabel.fontSize = 65
+            self.livesLabel.fontName = "Avenir"
+            addChild(self.livesLabel)
         
         
         
@@ -63,38 +72,6 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
           
         
-
-        // DEBUG:  Show the time between updats
-              
-
-//       let screenRightSide = size.width
-//      var zombieX =  self.zombie.position.x
-//        if(self.makeZombieMoveLeft==true)
-//        {
-//            zombieX =  self.zombie.position.x-10
-//
-//            if(zombieX<=0)
-//            {
-//
-//                self.makeZombieMoveRight=true
-//                self.makeZombieMoveLeft=false
-//            }
-//        }
-//
-//        if(self.makeZombieMoveRight==true)
-//        {
-//          zombieX =  self.zombie.position.x+10
-//
-//            if(zombieX>=screenRightSide)
-//            {
-//                self.makeZombieMoveLeft=true
-//                self.makeZombieMoveRight=false
-//            }
-//        }
-//
-//        self.zombie.position = CGPoint(x: zombieX, y: self.zombie.position.y)
-//    }
-//
        if (timeOfLastUpdate > 0) {
                    // currentTIme is a parameter in the update() function
                     dt = currentTime - timeOfLastUpdate;
@@ -103,15 +80,11 @@ class GameScene: SKScene {
                  }
        
    timeOfLastUpdate = currentTime
-       //print("\(dt*1000) ms since last update")
-        // first version of upgraded movement
+       
                let v = CGPoint(x:self.zombieMovementPerSecond, y:0)
-               self.move(sprite: self.zombie, velocity: v)
-        
-        
-                // second version of upgraded movement
-                self.move(sprite: self.zombie, velocity: self.velocity)
-        
+        self.moveZombieToward(mouseXPosition: self.mouseX, mouseYPostion: self.mouseY)
+        // second version of upgraded movement
+                
                 self.checkGameBoundaries()
         
         
@@ -120,6 +93,9 @@ class GameScene: SKScene {
         
         if (self.zombie.frame.intersects(self.gramma.frame) == true) {
                     print("\(currentTime): COLLISON!")
+            
+            self.lives=self.lives-1
+            self.livesLabel.text = "Lives Remaining \(lives)"
                 }
         
         
@@ -128,52 +104,41 @@ class GameScene: SKScene {
             }
     
     
-    
+    var mouseX:CGFloat = 0
+    var mouseY:CGFloat = 0
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
        {
-           let touch = touches.first
-           if(touch == nil)
-           {
-               return
-           }
-           let touchLocation=touch!.location(in: self)
-          // print("user tapped at\(touchLocation.x.rounded()),\(touchLocation.y.rounded())")
-           self.moveZombieToward(location:touchLocation)
+            let locationTouched = touches.first
+                   if (locationTouched == nil) {
+                       // an error occured
+                       return
+                   }
+                   
+                   let mousePosition = locationTouched!.location(in:self)
+                   
+                   print("mouseX = \(mousePosition.x)")
+                   print("mouseY = \(mousePosition.y)")
+                   print("-------")
+                   
+                   
+                   // 2. @TODO: set the global mosueX and mouseY variables to the mouse (x,y)
+                   self.mouseX = mousePosition.x
+                   self.mouseY = mousePosition.y
        }
         
         
-          // MARK:  Handle zombie movement
-            func move(sprite:SKSpriteNode, velocity:CGPoint) {
-              // v = f(direction,distance)
-        
-                let amountToMove = CGPoint(x: velocity.x * CGFloat(dt),
-                                           y:  velocity.y * CGFloat(dt) )
-        
-               //print("Amount to move: \(amountToMove)")
-        
-               // update the sprite's position
-               let newX = sprite.position.x + amountToMove.x
-               let newY = sprite.position.y + amountToMove.y
-               sprite.position = CGPoint(x:newX, y:newY)
-        
-        
-            }
-        
-            func moveZombieToward(location:CGPoint) {
-                let offset = CGPoint(x:location.x - zombie.position.x,
-                                    y:location.y - zombie.position.y)
-        
-               let aSquared = offset.x * offset.x
-               let bSquared = offset.y * offset.y
-        
-               let hypotenuese:Double = sqrt(Double(aSquared + bSquared))
-        
-                let direction = CGPoint(x: offset.x / CGFloat(hypotenuese),
-                                        y: offset.y / CGFloat(hypotenuese))
-        
-                self.velocity = CGPoint(x: direction.x * zombieMovementPerSecond,
-                                        y: direction.y * zombieMovementPerSecond)
-        
+            func moveZombieToward(mouseXPosition:CGFloat, mouseYPostion:CGFloat) {
+                       // 1. calculate disatnce between mouse and zombie
+                        let a = (self.mouseX - self.zombie.position.x);
+                        let b = (self.mouseY - self.zombie.position.y);
+                        let distance = sqrt((a * a) + (b * b))
+                       // 2. calculate the "rate" to move
+                        let xn = (a / distance)
+                        let yn = (b / distance)
+                
+                        // 3. move the bullet
+                        self.zombie.position.x = self.zombie.position.x + (xn * 10);
+                        self.zombie.position.y = self.zombie.position.y + (yn * 10);
         
             }
         
