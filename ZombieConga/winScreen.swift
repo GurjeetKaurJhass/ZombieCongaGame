@@ -1,5 +1,5 @@
 //
-//  loseScreen.swift
+//  winScreen.swift
 //  ZombieConga
 //
 //  Created by Gurjeet kaur on 2019-10-15.
@@ -11,7 +11,7 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
-class loseScreen: SKScene {
+class winScreen: SKScene {
     override init(size: CGSize) {
            super.init(size: size)
         }
@@ -24,7 +24,7 @@ class loseScreen: SKScene {
     // Set the background color of the app
              
      self.backgroundColor = SKColor.black;
-     let bg = SKSpriteNode(imageNamed: "YouLose")
+     let bg = SKSpriteNode(imageNamed: "YouWin")
      bg.position = CGPoint(x: size.width/2, y: size.height/2)
      bg.zPosition = -1
      addChild(bg)

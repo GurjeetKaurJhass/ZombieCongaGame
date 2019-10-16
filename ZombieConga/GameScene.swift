@@ -16,11 +16,11 @@ class GameScene: SKScene {
     var makeZombieMoveRight:Bool=true
     var makeZombieMoveLeft:Bool=false
     var livesLabel:SKLabelNode!
-     var scoreLabel:SKLabelNode!
+    var scoreLabel:SKLabelNode!
     var score = 0;
-        var timeOfLastUpdate:TimeInterval = 0
-        var dt:TimeInterval = 0
-        var lives = 100
+    var timeOfLastUpdate:TimeInterval = 0
+    var dt:TimeInterval = 0
+    var lives = 100
         // variables to deal with movement
         let zombieMovementPerSecond: CGFloat = 480.0
         var velocity = CGPoint.zero // this is a built in Swift constant. It equals (0,0)
@@ -123,11 +123,16 @@ class GameScene: SKScene {
                     let transitionEffect = SKTransition.flipVertical(withDuration: 2)
                     self.view?.presentScene(loseScene, transition:transitionEffect)
         }
-        
+        if(score>=3)
+               {
+                          let winScene = winScreen(size: self.size)
+                           let transitionEffect = SKTransition.flipVertical(withDuration: 2)
+                           self.view?.presentScene(winScene, transition:transitionEffect)
+               }
         }
               // calculate offset between the zombie and the touch
                //self.moveZombieToward(location: touchLocation)
-            }
+        }
     
     
     var cats:[SKSpriteNode] = []
