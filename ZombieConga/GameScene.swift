@@ -9,8 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
-
+class GameScene: SKScene {  
     var zombie:SKSpriteNode = SKSpriteNode(imageNamed:"zombie1")
     var gramma:SKSpriteNode = SKSpriteNode(imageNamed:"enemy")
     var cat:SKSpriteNode = SKSpriteNode(imageNamed: "cat")
@@ -43,8 +42,6 @@ class GameScene: SKScene {
     gramma=SKSpriteNode(imageNamed: "enemy")
     self.gramma.position = CGPoint(x:size.width-100, y:size.height/2)
     addChild(self.gramma)
-        
-        
         
         
          // Add life label
@@ -90,17 +87,17 @@ class GameScene: SKScene {
               timeOfLastUpdate = currentTime
        
                //let v = CGPoint(x:self.zombieMovementPerSecond, y:0)
-    numLoops = numLoops + 1
+              numLoops = numLoops + 1
                 if (numLoops % 120 == 0) {
                     // make a cat
                    self.spawnCat()
         
                 }
-         
+          self.checkGameBoundaries()
         self.moveZombieToward(mouseXPosition: self.mouseX, mouseYPostion: self.mouseY)
         // second version of upgraded movement
                 
-                self.checkGameBoundaries()
+               
     
         
         for (index, cat) in self.cats.enumerated() {
@@ -118,14 +115,21 @@ class GameScene: SKScene {
     if (self.zombie.frame.intersects(self.gramma.frame) == true) {
                     print("\(currentTime): COLLISON!")
             
-            self.lives=self.lives-1
-            self.livesLabel.text = "Lives Remaining \(lives)"
-                }
+                 self.lives=self.lives-1
+                  self.livesLabel.text = "Lives Remaining \(lives)"
+        if(lives == 0)
+        {
+                   let loseScene = loseScreen(size: self.size)
+                    let transitionEffect = SKTransition.flipVertical(withDuration: 2)
+                    self.view?.presentScene(loseScene, transition:transitionEffect)
+        }
         
-        
-           // calculate offset between the zombie and the touch
+        }
+              // calculate offset between the zombie and the touch
                //self.moveZombieToward(location: touchLocation)
             }
+    
+    
     var cats:[SKSpriteNode] = []
          
         func spawnCat() {
