@@ -43,12 +43,7 @@ class GameScene: SKScene {
     self.gramma.position = CGPoint(x:size.width-100, y:size.height/2)
     addChild(self.gramma)
         
-        self.cat = SKSpriteNode(imageNamed: "cat")
         
-        let randomXPos = Int.random(in: 0 ... 800)
-            let randomYPos = Int.random(in: 0 ... 800)
-            self.cat.position = CGPoint(x:randomXPos, y:randomYPos)
-          addChild(self.cat)
         
         
          // Add life label
@@ -89,7 +84,8 @@ class GameScene: SKScene {
        
    timeOfLastUpdate = currentTime
        
-               let v = CGPoint(x:self.zombieMovementPerSecond, y:0)
+               //let v = CGPoint(x:self.zombieMovementPerSecond, y:0)
+         self.spawnCat()
         self.moveZombieToward(mouseXPosition: self.mouseX, mouseYPostion: self.mouseY)
         // second version of upgraded movement
                 
@@ -110,11 +106,28 @@ class GameScene: SKScene {
            // calculate offset between the zombie and the touch
                //self.moveZombieToward(location: touchLocation)
             }
+    var cats:[SKSpriteNode] = []
+         
+        func spawnCat() {
+            // Add a cat to a static location
+           let cat = SKSpriteNode(imageNamed: "cat")
     
+            // generate a random x position
+           let randomXPos = Int.random(in: 0 ... 800)
+            let randomYPos = Int.random(in: 0 ... 800)
+            cat.position = CGPoint(x:randomXPos, y:randomYPos)
+    
+            // add the cat to the screen
+            addChild(cat)
+    
+           // add the cat to the array
+            self.cats.append(cat)
+    
+        }
     
     var mouseX:CGFloat = 0
     var mouseY:CGFloat = 0
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
        {
             let locationTouched = touches.first
                    if (locationTouched == nil) {
