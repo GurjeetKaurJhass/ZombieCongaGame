@@ -17,14 +17,15 @@ class GameScene: SKScene {
     var makeZombieMoveRight:Bool=true
     var makeZombieMoveLeft:Bool=false
     var livesLabel:SKLabelNode!
-    
+     var scoreLabel:SKLabelNode!
+    var score = 0;
         var timeOfLastUpdate:TimeInterval = 0
         var dt:TimeInterval = 0
         var lives = 100
         // variables to deal with movement
         let zombieMovementPerSecond: CGFloat = 480.0
         var velocity = CGPoint.zero // this is a built in Swift constant. It equals (0,0)
-    
+     
     
     override func didMove(to view: SKView) {
    // Set the background color of the app
@@ -54,7 +55,12 @@ class GameScene: SKScene {
             self.livesLabel.fontName = "Avenir"
             addChild(self.livesLabel)
         
-        
+        self.scoreLabel = SKLabelNode(text: "Score: \(self.score)")
+                self.scoreLabel.position = CGPoint(x:400, y:1000)
+                self.scoreLabel.fontColor = UIColor.yellow
+                self.scoreLabel.fontSize = 65
+                self.scoreLabel.fontName = "Avenir"
+                addChild(self.scoreLabel)
         
         
     let move1 = SKAction.move(to: CGPoint(x: size.width/2 , y: 400),
@@ -73,8 +79,7 @@ class GameScene: SKScene {
     }
     var numLoops = 0
     override func update(_ currentTime: TimeInterval) {
-          
-        
+     
        if (timeOfLastUpdate > 0) {
                    // currentTIme is a parameter in the update() function
                     dt = currentTime - timeOfLastUpdate;
@@ -82,12 +87,10 @@ class GameScene: SKScene {
                     dt = 0
                  }
        
-   timeOfLastUpdate = currentTime
+              timeOfLastUpdate = currentTime
        
                //let v = CGPoint(x:self.zombieMovementPerSecond, y:0)
-        
-        
-        numLoops = numLoops + 1
+    numLoops = numLoops + 1
                 if (numLoops % 120 == 0) {
                     // make a cat
                    self.spawnCat()
@@ -100,8 +103,19 @@ class GameScene: SKScene {
                 self.checkGameBoundaries()
     
         
+        for (index, cat) in self.cats.enumerated() {
+                    if (self.zombie.frame.intersects(cat.frame) == true) {
+                        // increase teh score & update the label
+                        self.score = self.score + 1
+                        self.scoreLabel.text = "Score: \(self.score)"
+                        // remove cat from screen
+                        cat.removeFromParent()
+                       // remove cat from array
+                       self.cats.remove(at:index)
+                    }
+                }
         
-        if (self.zombie.frame.intersects(self.gramma.frame) == true) {
+    if (self.zombie.frame.intersects(self.gramma.frame) == true) {
                     print("\(currentTime): COLLISON!")
             
             self.lives=self.lives-1
