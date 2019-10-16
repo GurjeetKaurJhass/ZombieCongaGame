@@ -44,8 +44,11 @@ class GameScene: SKScene {
     addChild(self.gramma)
         
         self.cat = SKSpriteNode(imageNamed: "cat")
-               self.cat.position = CGPoint(x:600, y:600)
-               addChild(self.cat)
+        
+        let randomXPos = Int.random(in: 0 ... 800)
+            let randomYPos = Int.random(in: 0 ... 800)
+            self.cat.position = CGPoint(x:randomXPos, y:randomYPos)
+          addChild(self.cat)
         
         
          // Add life label
