@@ -71,7 +71,7 @@ class GameScene: SKScene {
 //            self.zombie.run(zombieAnimation)
         
     }
-    
+    var numLoops = 0
     override func update(_ currentTime: TimeInterval) {
           
         
@@ -85,14 +85,20 @@ class GameScene: SKScene {
    timeOfLastUpdate = currentTime
        
                //let v = CGPoint(x:self.zombieMovementPerSecond, y:0)
-         self.spawnCat()
+        
+        
+        numLoops = numLoops + 1
+                if (numLoops % 120 == 0) {
+                    // make a cat
+                   self.spawnCat()
+        
+                }
+         
         self.moveZombieToward(mouseXPosition: self.mouseX, mouseYPostion: self.mouseY)
         // second version of upgraded movement
                 
                 self.checkGameBoundaries()
-        
-        
-        
+    
         
         
         if (self.zombie.frame.intersects(self.gramma.frame) == true) {
@@ -113,8 +119,8 @@ class GameScene: SKScene {
            let cat = SKSpriteNode(imageNamed: "cat")
     
             // generate a random x position
-           let randomXPos = Int.random(in: 0 ... 800)
-            let randomYPos = Int.random(in: 0 ... 800)
+            let randomXPos = CGFloat.random(in: 0 ... size.width)
+            let randomYPos = CGFloat.random(in: 0 ... size.height)
             cat.position = CGPoint(x:randomXPos, y:randomYPos)
     
             // add the cat to the screen
